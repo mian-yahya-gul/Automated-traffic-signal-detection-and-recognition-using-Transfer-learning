@@ -2,14 +2,14 @@ import cv2
 import torch
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import PhotoImage, font
 from PIL import Image, ImageTk
 from ultralytics import YOLO
+import os
 import sqlite3
 from datetime import datetime
 
 # Load YOLOv8 model
-model_path = "/Users/apple/Documents/Automated-traffic-signal-detection-and-recognition-using-Transfer-learning/best_roboflow.pt"  # Path to your saved YOLOv8 model
+model_path = "/Users/yahya/Documents/fyp-roboflow/best_roboflow.pt"  # Path to your saved YOLOv8 model
 model = YOLO(model_path)  # Loading custom YOLOv8 model
 
 # Initialize OpenCV window
@@ -202,45 +202,29 @@ def stop():
         cap.release()
     window.quit()
 
-# Tkinter UI Setup
+# Tkinter GUI Setup
 window = tk.Tk()
 window.title("Traffic Sign Detection and Recognition")
 window.geometry("800x600")
-window.config(bg="#3D3D3D")  # offwhite background
-
-# Set custom font
-font_style = font.Font(family="Helvetica", size=12, weight="bold")
 
 # Create canvas for video feed
-canvas = tk.Canvas(window, width=800, height=600, bg="#E2DFD2")
+canvas = tk.Canvas(window, width=800, height=600)
 canvas.pack()
 
-# Define buttons with styling using pack() instead of grid()
-btn_webcam = tk.Button(window, text="Open Webcam", command=open_webcam, font=font_style, padx=10, pady=5, relief="solid", bd=2, bg="#2980B9", fg="black")
-btn_video = tk.Button(window, text="Open Video File", command=open_video, font=font_style, padx=10, pady=5, relief="solid", bd=2, bg="#2980B9", fg="black")
-btn_image = tk.Button(window, text="Upload Image", command=open_image, font=font_style, padx=10, pady=5, relief="solid", bd=2, bg="#2980B9", fg="black")
-btn_yahya = tk.Button(window, text="yahya", command=open_image, font=font_style, padx=10, pady=5, relief="solid", bd=2, bg="#2980B9", fg="black")
-btn_stop = tk.Button(window, text="Stop", command=stop, font=font_style, padx=10, pady=5, relief="solid", bd=2, bg="#E74C3C", fg="black")
-
-# Arrange buttons using pack() method
+# Buttons to control the video feed and image upload
+btn_webcam = tk.Button(window, text="Open Webcam", command=open_webcam)
 btn_webcam.pack(pady=10)
+
+btn_video = tk.Button(window, text="Open Video File", command=open_video)
 btn_video.pack(pady=10)
+
+btn_image = tk.Button(window, text="Upload Image", command=open_image)
 btn_image.pack(pady=10)
-btn_yahya.pack(pady=10)
+
+btn_stop = tk.Button(window, text="Stop", command=stop)
 btn_stop.pack(pady=10)
-
-# Add hover effect to buttons
-def on_enter(event):
-    event.widget.config(bg="#1ABC9C")
-
-def on_leave(event):
-    event.widget.config(bg="#2980B9")
-
-btn_webcam.bind("<Enter>", on_enter)
-btn_webcam.bind("<Leave>", on_leave)
 
 # Initialize the database
 create_database()
-
 # Start Tkinter main loop
 window.mainloop()
